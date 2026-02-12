@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffebee;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        .container { text-align: center; padding: 20px; z-index: 1; }
+        h1 { color: #d32f2f; font-size: 2.5rem; transition: 0.3s; }
+        .gif_container img { width: 230px; border-radius: 15px; margin-bottom: 20px; }
+        .buttons { display: flex; align-items: center; justify-content: center; gap: 20px; min-height: 200px; }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+        }
+        #yesButton { background-color: #4caf50; color: white; z-index: 10; }
+        #noButton { background-color: #f44336; color: white; }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
+
+    <div class="container" id="mainContainer">
+        <div class="gif_container">
+            <img id="displayImage" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1eHByZzZueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJLufpN78i5EJa2/giphy.gif" alt="Cute bear">
+        </div>
+        <h1 id="question">Will you be my Valentine? ❤️</h1>
+        <div class="buttons">
+            <button id="yesButton" onclick="handleYes()">Yes!</button>
+            <button id="noButton" onclick="handleNo()">No</button>
+        </div>
+    </div>
+
+    <script>
+        let noCount = 0;
+        let yesSize = 1;
+        const music = document.getElementById('bgMusic');
+
+        const images = [
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjZicXpxbmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/OPU6wzx8JBaK6SgSNA/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjZicXpxbmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/7SF5scGB2AFrO/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjZicXpxbmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/BEob5zF564BnE4Uy6G/giphy.gif",
+            "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjZicXpxbmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/qscdhMc5LoF8c/giphy.gif"
+        ];
+
+        const messages = ["No", "Are you sure?", "Pleease?? 🥺", "Don't do this...", "I'm crying now", "Click the green one!"];
+
+        function startMusic() {
+            music.play().catch(e => console.log("Audio play blocked until interaction"));
+        }
+
+        function handleNo() {
+            startMusic();
+            noCount++;
+            
+            // Change image
+            const imgIndex = Math.min(noCount - 1, images.length - 1);
+            document.getElementById('displayImage').src = images[imgIndex];
+            
+            // Change button text
+            const msgIndex = Math.min(noCount, messages.length - 1);
+            document.getElementById('noButton').innerText = messages[msgIndex];
+
+            // Make "Yes" button huge
+            yesSize += 0.5;
+            document.getElementById('yesButton').style.transform = `scale(${yesSize})`;
+            
+            // Push the No button away
+            const x = Math.random() * 100 - 50;
+            const y = Math.random() * 100 - 50;
+            document.getElementById('noButton').style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        function handleYes() {
+            startMusic();
+            // Fireworks
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            
+            // Bigger burst
+            setTimeout(() => {
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#ff0000', '#ffffff', '#ff69b4'] });
+            }, 300);
+
+            document.getElementById('mainContainer').innerHTML = `
+                <h1 style="color:#d32f2f;">WUN VALENTINE! 🥰</h1>
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjZicXpxbmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/vPFgvC0r757mR0XnQW/giphy.gif" style="width:300px; border-radius:15px;">
+                <p style="font-size: 1.5rem; color: #d32f2f;">"It's so amazing what we've done..."</p>
+            `;
+        }
+    </script>
+</body>
+</html>
